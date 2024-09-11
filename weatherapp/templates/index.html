@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        :root {
+            --primary-color: #4a5568;
+            --secondary-color: #63b3ed;
+            --background-dark: #1a202c;
+            --background-light: #2d3748;
+            --text-light: #e2e8f0;
+            --text-dark: #1a202c;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--background-dark), #2c3e50);
+            color: var(--text-light);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: var(--secondary-color);
+            font-size: 3rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: 2px;
+        }
+        form {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        input[type="text"] {
+            padding: 12px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 25px 0 0 25px;
+            width: 60%;
+            max-width: 300px;
+            background-color: var(--background-light);
+            color: var(--text-light);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        input[type="text"]:focus {
+            box-shadow: 0 0 0 2px var(--secondary-color);
+        }
+        input[type="submit"] {
+            padding: 12px 24px;
+            font-size: 1rem;
+            background-color: var(--secondary-color);
+            color: var(--text-dark);
+            border: none;
+            border-radius: 0 25px 25px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: #4299e1;
+            transform: translateY(-2px);
+        }
+        .weather-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+        .weather-box {
+            background-color: rgba(44, 55, 72, 0.8);
+            border-radius: 15px;
+            padding: 25px;
+            width: 100%;
+            max-width: 350px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        .weather-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        .weather-box h2 {
+            margin-top: 0;
+            color: var(--secondary-color);
+            font-size: 1.8rem;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .weather-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .weather-details {
+            flex: 1;
+        }
+        .weather-details p {
+            margin: 10px 0;
+            font-size: 1.1rem;
+        }
+        .weather-icon {
+            flex: 0 0 120px;
+            text-align: center;
+        }
+        .weather-icon img {
+            width: 120px;
+            height: 120px;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.7));
+            transition: all 0.3s ease;
+        }
+        .weather-icon img:hover {
+            transform: scale(1.1);
+        }
+        .temperature {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+        @media (max-width: 600px) {
+            .weather-box {
+                max-width: 100%;
+            }
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Weather Forecast</h1>
+    
+        <!-- City input form -->
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.name }}
+            <input type="submit" value="Add City">
+        </form>
+    
+        <!-- Weather information for each city -->
+        <div class="weather-container">
+            {% for weather in weather_data %}
+            <div class="weather-box">
+                <h2>{{ weather.city }}, {{ weather.country }}</h2>
+                <div class="weather-info">
+                    <div class="weather-details">
+                        <div class="temperature">{{ weather.temperature }}°C</div>
+                        <p><strong>{{ weather.description|title }}</strong></p>
+                        <p>Humidity: {{ weather.humidity }}%</p>
+                        <p>Pressure: {{ weather.pressure }} hPa</p>
+                        <p>Wind Speed: {{ weather.windspeed }} m/s</p>
+                        <p>Sunrise: {{ weather.sunrise|date:"H:i" }}</p>
+                        <p>Sunset: {{ weather.sunset|date:"H:i" }}</p> 
+                    </div>
+                    <div class="weather-icon">
+                        <img src="http://openweathermap.org/img/wn/{{ weather.icon }}@2x.png" alt="Weather icon">
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
