@@ -141,15 +141,12 @@
 <body>
     <div class="container">
         <h1>Weather Forecast</h1>
-    
-        <!-- City input form -->
         <form method="POST">
             {% csrf_token %}
             {{ form.name }}
             <input type="submit" value="Add City">
         </form>
     
-        <!-- Weather information for each city -->
         <div class="weather-container">
             {% for weather in weather_data %}
             <div class="weather-box">
