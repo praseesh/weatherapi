@@ -6,26 +6,20 @@ from decouple import config
 from datetime import datetime
 
 def index(request):
-    # Get all city objects
     cities = City.objects.all()
-
-    # Fetch the API key from environment variables
     api_key = config('API_KEY')
 
-    # Define the base URL for the OpenWeather API
     url = 'https://api.openweathermap.org/data/2.5/weather?q={}&appid={}'
 
     if request.method == 'POST':
         form = CityForm(request.POST)
         if form.is_valid():
-            form.save()  # Save the form only if it's valid
+            form.save()  
 
-    # Create an empty form
     form = CityForm()
 
     weather_data = []
     for city in cities:
-        # Format the URL with the city name and API key
         city_weather = requests.get(url.format(city.name, api_key)).json()
 
         weather = {
@@ -41,9 +35,7 @@ def index(request):
             'windspeed': city_weather['wind']['speed'],
         }
 
-        # Append each city's weather to the weather_data list
         weather_data.append(weather)
 
-    # Pass weather_data and form to the template
     context = {'weather_data': weather_data, 'form': form}
     return render(request, 'index.html', context)
