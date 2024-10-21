@@ -15,13 +15,10 @@ def index(request):
         form = CityForm(request.POST)
         if form.is_valid():
             form.save()  
-
     form = CityForm()
-
     weather_data = []
     for city in cities:
         city_weather = requests.get(url.format(city.name, api_key)).json()
-
         weather = {
             'city': city.name,
             'temperature': round(city_weather['main']['temp'] - 273.15, 2),
@@ -34,13 +31,11 @@ def index(request):
             'sunset': datetime.utcfromtimestamp(city_weather['sys']['sunset']).strftime('%H:%M:%S'),
             'windspeed': city_weather['wind']['speed'],
         }
-
         weather_data.append(weather)
-
     context = {'weather_data': weather_data, 'form': form}
     return render(request, 'index.html', context)
 
-# ------------------------------------------------------------------------------------------------
+
 
 
 
