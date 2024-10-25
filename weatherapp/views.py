@@ -8,9 +8,7 @@ from datetime import datetime
 def index(request):
     cities = City.objects.all()
     api_key = config('API_KEY')
-
     url = 'https://api.openweathermap.org/data/2.5/weather?q={}&appid={}'
-
     if request.method == 'POST':
         form = CityForm(request.POST)
         if form.is_valid():
