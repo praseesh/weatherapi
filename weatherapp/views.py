@@ -29,7 +29,6 @@ def index(request):
             'sunset': datetime.utcfromtimestamp(city_weather['sys']['sunset']).strftime('%H:%M:%S'),
             'windspeed': city_weather['wind']['speed'],
         }
-        
         weather_data.append(weather)
     context = {'weather_data': weather_data, 'form': form}
     return render(request, 'index.html', context)
