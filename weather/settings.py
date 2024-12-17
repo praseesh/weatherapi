@@ -2,14 +2,9 @@ from pathlib import Path
 import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-
 SECRET_KEY = 'django-insecure-u=zd-wnql82moo$k4j3=^ezjq%+=@(d63n3ouoh9as)5^qe4jb'
-
 DEBUG = True
-
 ALLOWED_HOSTS = []
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
